@@ -1,7 +1,7 @@
 from datetime import timedelta
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from utils.database import Base, SessionLocal, engine
+from utils.database import Base, engine, get_db
 from utils.jwt import create_token, encrypt, get_payload, oath2_schema, verify
 from utils.models import LoginBase, User, UserBase
 Base.metadata.create_all(bind=engine)
@@ -10,12 +10,6 @@ router = APIRouter(
     tags=["user"]
 )
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 @router.get("/")
 def entry():
